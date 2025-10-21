@@ -1,0 +1,14 @@
+artifact_uri: file:///c:/Users/yosrc/OneDrive/Desktop/1950-2025%20temp/scripts/mlruns/523714809259268107/bb8db2ad22f44c4dbc725c69f3331522/artifacts
+end_time: 1755369425283
+entry_point_name: ''
+experiment_id: '523714809259268107'
+lifecycle_stage: active
+run_id: bb8db2ad22f44c4dbc725c69f3331522
+run_name: Prophet_Model_Run
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1755368634260
+status: 3
+tags: []
+user_id: yosrc

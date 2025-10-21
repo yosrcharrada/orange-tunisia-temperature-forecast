@@ -1,0 +1,15 @@
+apiVersion: 1
+datasources:
+  - uid: postgres-timeseries
+    name: Postgres Timeseries
+    type: postgres
+    access: proxy
+    url: postgres:5432
+    user: mlapp
+    secureJsonData:
+      password: mlapp
+    jsonData:
+      database: timeseriesdb
+      sslmode: disable
+      postgresVersion: 1500
+      timescaledb: false

@@ -1,0 +1,14 @@
+artifact_uri: file:///c:/Users/yosrc/OneDrive/Desktop/1950-2025%20temp/scripts/mlruns/584122115256399024/a86157c78b40443fb70677d3e069543b/artifacts
+end_time: 1754557198578
+entry_point_name: ''
+experiment_id: '584122115256399024'
+lifecycle_stage: active
+run_id: a86157c78b40443fb70677d3e069543b
+run_name: ARIMA_Model
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1754557198524
+status: 4
+tags: []
+user_id: yosrc

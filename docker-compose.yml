@@ -1,0 +1,121 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: ts-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    restart: unless-stopped
+
+  minio:
+    image: minio/minio:latest
+    container_name: ts-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+    restart: unless-stopped
+
+  createbucket:
+    image: minio/mc:latest
+    container_name: ts-minio-mc
+    depends_on:
+      - minio
+    entrypoint:
+      - /bin/sh
+      - -c
+    command: |
+      set -e
+      tries=0
+      until mc alias set local http://minio:9000 minio minio123 && mc ls local >/dev/null 2>&1; do
+        tries=$$((tries+1))
+        if [ "$$tries" -ge 60 ]; then
+          echo "MinIO not ready after ~120s"; exit 1
+        fi
+        echo "Waiting for MinIO... ($$tries/60)"; sleep 2
+      done
+      mc mb -p local/mlflow || true
+      mc ls local
+    restart: "no"
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    container_name: ts-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  mlflow:
+    build:
+      context: ./services/mlflow
+    container_name: ts-mlflow
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_started
+      createbucket:
+        condition: service_completed_successfully
+    environment:
+      BACKEND_STORE_URI: postgresql+psycopg2://postgres:postgres@postgres:5432/mlflowdb
+      ARTIFACT_ROOT: s3://mlflow
+      MLFLOW_S3_ENDPOINT_URL: http://minio:9000
+      AWS_ACCESS_KEY_ID: minio
+      AWS_SECRET_ACCESS_KEY: minio123
+    command:
+      - sh
+      - -c
+      - >
+        mlflow server
+        --backend-store-uri "$$BACKEND_STORE_URI"
+        --default-artifact-root "$$ARTIFACT_ROOT"
+        --host 0.0.0.0
+        --port 5000
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+
+  jobs:
+    build:
+      context: ./jobs
+    container_name: ts-jobs
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./data:/app/data
+    entrypoint:
+      - python
+      - -c
+      - "print('Jobs image ready. Use: docker compose run --rm jobs python <script>.py')"
+
+volumes:
+  pgdata:
+  minio-data:
+  grafana-data:

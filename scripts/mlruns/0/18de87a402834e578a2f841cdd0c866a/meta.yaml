@@ -1,0 +1,14 @@
+artifact_uri: file:///c:/Users/yosrc/OneDrive/Desktop/1950-2025%20temp/scripts/mlruns/0/18de87a402834e578a2f841cdd0c866a/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 18de87a402834e578a2f841cdd0c866a
+run_name: GRU_Baseline
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1754300010648
+status: 1
+tags: []
+user_id: yosrc

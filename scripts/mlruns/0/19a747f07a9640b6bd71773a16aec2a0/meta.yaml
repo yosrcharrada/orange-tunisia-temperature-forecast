@@ -1,0 +1,14 @@
+artifact_uri: file:///c:/Users/yosrc/OneDrive/Desktop/1950-2025%20temp/scripts/mlruns/0/19a747f07a9640b6bd71773a16aec2a0/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 19a747f07a9640b6bd71773a16aec2a0
+run_name: gentle-lamb-599
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1754464734499
+status: 1
+tags: []
+user_id: yosrc

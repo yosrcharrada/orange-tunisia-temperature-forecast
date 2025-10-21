@@ -1,0 +1,14 @@
+artifact_uri: file:///c:/Users/yosrc/OneDrive/Desktop/1950-2025%20temp/scripts/mlruns/0/06e58ab20e1442ae82fafa2d1b08ee5c/artifacts
+end_time: 1755688740006
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 06e58ab20e1442ae82fafa2d1b08ee5c
+run_name: Prophet with wider interval
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1755688739660
+status: 4
+tags: []
+user_id: yosrc

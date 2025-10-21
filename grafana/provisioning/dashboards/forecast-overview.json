@@ -1,0 +1,55 @@
+{
+  "title": "Tunisia Temperature Forecast",
+  "timezone": "browser",
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Actual Temperature (temp_c)",
+      "datasource": { "type": "postgres", "uid": "postgres-timeseries" },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "time_series",
+          "rawSql": "SELECT $__time(datetime) AS time, temp_c AS value FROM raw_data WHERE $__timeFilter(datetime) ORDER BY 1"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "celsius" } },
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" } }
+    },
+    {
+      "type": "timeseries",
+      "title": "Latest Forecast vs Actuals",
+      "datasource": { "type": "postgres", "uid": "postgres-timeseries" },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "time_series",
+          "rawSql": "WITH latest AS (SELECT max(forecast_time) AS ft FROM forecasts) SELECT $__time(ts) AS time, yhat AS value FROM forecasts, latest WHERE forecast_time = latest.ft AND $__timeFilter(ts) ORDER BY 1"
+        },
+        {
+          "refId": "B",
+          "format": "time_series",
+          "rawSql": "SELECT $__time(datetime) AS time, temp_c AS value FROM raw_data WHERE $__timeFilter(datetime) ORDER BY 1"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "celsius" } },
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" } }
+    },
+    {
+      "type": "table",
+      "title": "Latest Metrics (optional)",
+      "datasource": { "type": "postgres", "uid": "postgres-timeseries" },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawSql": "SELECT model_name, metric_name, metric_value, logged_at FROM metrics ORDER BY logged_at DESC LIMIT 50"
+        }
+      ],
+      "options": { "showHeader": true }
+    }
+  ],
+  "time": { "from": "now-50y", "to": "now" }
+}

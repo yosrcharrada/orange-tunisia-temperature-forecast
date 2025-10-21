@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+.pytest_cache/
+**/.ipynb_checkpoints/
+
+# Environments and IDE
+.env
+.env.*
+.venv/
+venv/
+.vscode/
+.history/
+
+# Conda/locks
+*.conda
+*.lock
+
+# OS / misc
+.DS_Store
+Thumbs.db
+*.log
+
+# Data and artifacts
+data/raw/
+**/mlruns/          # ignore MLflow runs anywhere
+models/
+artifacts/
+checkpoints/
+logs/
+
+# Databases / state
+*.db
+
+# Do not commit large model binaries
+scripts/models/
+*.pkl
