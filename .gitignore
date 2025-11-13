@@ -28,7 +28,7 @@ Thumbs.db
 # Data and artifacts
 data/raw/
 **/mlruns/          # ignore MLflow runs anywhere
-models/
+/models/            # Only ignore root-level models directory
 artifacts/
 checkpoints/
 logs/
@@ -37,5 +37,7 @@ logs/
 *.db
 
 # Do not commit large model binaries
-scripts/models/
-*.pkl
+scripts/models/*.h5
+scripts/models/*.pkl
+# But allow metadata
+!scripts/models/metadata.json

@@ -115,6 +115,26 @@ services:
       - -c
       - "print('Jobs image ready. Use: docker compose run --rm jobs python <script>.py')"
 
+  lstm-forecast-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lstm-forecast-api
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount models directory for easy updates without rebuild
+      - ./scripts/models:/app/scripts/models:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
 volumes:
   pgdata:
   minio-data:
