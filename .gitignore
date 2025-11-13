@@ -37,5 +37,7 @@ logs/
 *.db
 
 # Do not commit large model binaries
-scripts/models/
-*.pkl
+scripts/models/*.h5
+scripts/models/*.pkl
+# But allow metadata
+!scripts/models/metadata.json
