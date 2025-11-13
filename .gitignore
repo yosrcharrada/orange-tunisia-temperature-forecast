@@ -28,7 +28,7 @@ Thumbs.db
 # Data and artifacts
 data/raw/
 **/mlruns/          # ignore MLflow runs anywhere
-models/
+/models/            # Only ignore root-level models directory
 artifacts/
 checkpoints/
 logs/

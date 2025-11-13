@@ -1,0 +1,18 @@
+{
+  "sequence_length": 168,
+  "features": ["temp_c"],
+  "target": "temp_c",
+  "scaling_method": "MinMaxScaler",
+  "model_type": "LSTM",
+  "training_info": {
+    "description": "LSTM model trained on hourly temperature data from ERA5 for Tunisia",
+    "temporal_coverage": "1950-2025",
+    "lookback_window": "168 hours (1 week)",
+    "prediction_horizon": "1 hour (multi-step capable)"
+  },
+  "preprocessing": {
+    "scaler_file": "temp_scaler.pkl",
+    "input_shape": [1, 168, 1],
+    "feature_range": [0, 1]
+  }
+}
